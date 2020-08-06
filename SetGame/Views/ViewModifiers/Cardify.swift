@@ -13,13 +13,20 @@ struct Cardify: AnimatableModifier {
     private let cornerRadius: CGFloat = 5.0
     private let edgeLineWidth: CGFloat = 2
     private let fontScaleFactor: CGFloat = 0.6
-    var isSelected: Bool 
+    var isSelected: Bool
+    var isMatched: Bool
+    var isPartOfWrongSet: Bool
 
     func body(content: Content) -> some View {
         ZStack{
             Group{
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(Color.white)
+                if isPartOfWrongSet{
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .fill(Color.orange)
+                }else{
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .fill(isMatched ? Color.gray : Color.white)
+                }
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(lineWidth: edgeLineWidth)
                     .foregroundColor(isSelected ? .green : .gray)
@@ -32,7 +39,7 @@ struct Cardify: AnimatableModifier {
 
 
 extension View {
-    func cardify (isSelected: Bool) -> some View{
-        self.modifier(Cardify(isSelected: isSelected))
+    func cardify (isSelected: Bool, isMatched: Bool, isPartOfWrongSet: Bool) -> some View{
+        self.modifier(Cardify(isSelected: isSelected, isMatched: isMatched, isPartOfWrongSet: isPartOfWrongSet))
     }
 }

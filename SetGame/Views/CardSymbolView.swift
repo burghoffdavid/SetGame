@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CardSymbolView: View {
     var card: SetGame<CardSymbol, CardShading, CardColor>.Card
+    let colors: Dictionary<CardColor, Color> = [CardColor.red: Color.red, CardColor.blue: Color.blue, CardColor.green : Color.green]
 
     var body: some View{
         switch card.symbol {
