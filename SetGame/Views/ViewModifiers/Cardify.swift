@@ -29,10 +29,9 @@ struct Cardify: AnimatableModifier {
                 }
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(lineWidth: edgeLineWidth)
-                    .foregroundColor(isSelected ? .green : .gray)
+                    .foregroundColor(.gray)
                 content
             }
-            //RoundedRectangle(cornerRadius: cornerRadius)
         }
     }
 }

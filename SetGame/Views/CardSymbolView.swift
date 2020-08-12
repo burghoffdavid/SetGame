@@ -10,40 +10,67 @@ import SwiftUI
 
 struct CardSymbolView: View {
     var card: SetGame<CardSymbol, CardShading, CardColor>.Card
-    let colors: Dictionary<CardColor, Color> = [CardColor.red: Color.red, CardColor.blue: Color.blue, CardColor.green : Color.green]
+
+    var color: Color {
+        switch card.color {
+        case .blue:
+            return .blue
+        case .green:
+            return .green
+        case .red:
+            return .red
+        }
+    }
+
+    func getShape(symbol: CardSymbol) -> some Shape{
+        switch symbol {
+        case .oval:
+            return AnyShape(RoundedRectangle(cornerRadius: 25))
+        case .diamond:
+            return AnyShape(DiamondShape())
+        case .squiggle:
+            return AnyShape(SquiggleShape())
+        }
+    }
 
     var body: some View{
-        switch card.symbol {
-        case .oval:
-            switch card.shading {
-            case .clear:
-                RoundedRectangle(cornerRadius: 25)
-                    .stroke(colors[card.color]!, lineWidth: 2.0)
-                    .aspectRatio(4/2, contentMode: .fill)
-            default:
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(colors[card.color]!)
-                    .aspectRatio(4/2, contentMode: .fill)
-            }
-        case .squiggle :
-            switch card.shading {
-            case .clear:
-                SquiggleShape()
-                    .stroke(colors[card.color]!, lineWidth: 2.0)
-            default:
-                SquiggleShape()
-                    .stroke(colors[card.color]!, lineWidth: 2.0)
-            }
-        case .diamond:
-            switch card.shading {
-            case .clear:
-                DiamondShape()
-                    .stroke(colors[card.color]!, lineWidth: 2.0)
-            default:
-                DiamondShape()
-                    .fill(colors[card.color]!)
-            }
+        getShape(symbol: card.symbol)
+            .shadingModifier(card.shading)
+            .foregroundColor(color)
+    }
+}
+
+extension Shape {
+    func shadingModifier (_ shading: CardShading) -> some View{
+        switch shading {
+        case .solid:
+           return
+            AnyView(self.fill())
+        case .clear:
+            return AnyView(self.stroke(lineWidth: 1.5))
+        case .striped:
+            return AnyView( ZStack{
+                self.stroke(lineWidth: 1.5)
+                Stripes(interval: 2).stroke().mask(self)
+            })
         }
 
     }
 }
+
+
+struct AnyShape: Shape {
+    init<S: Shape>(_ wrapped: S) {
+        _path = { rect in
+            let path = wrapped.path(in: rect)
+            return path
+        }
+    }
+
+    func path(in rect: CGRect) -> Path {
+        return _path(rect)
+    }
+
+    private let _path: (CGRect) -> Path
+}
+
