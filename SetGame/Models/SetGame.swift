@@ -19,6 +19,8 @@ struct SetGame<Symbols, Shadings, Colors> where Symbols: CaseIterable & Equatabl
     private var matchFound: Bool{
         dealtCards.filter{$0.isMatched}.count == 3
     }
+    private var baseScorePerMatch: Double = 30
+    private var scorePenaltyMatchAvailable = -5
 
     init() {
         deck = [Card]()
@@ -136,7 +138,7 @@ struct SetGame<Symbols, Shadings, Colors> where Symbols: CaseIterable & Equatabl
                 }
             }
             if matchWasAvailable{
-                score -= 5
+                score -= scorePenaltyMatchAvailable
             }
             for _ in 0...2{
                 dealtCards.append(deck.popLast()!)
@@ -157,11 +159,13 @@ struct SetGame<Symbols, Shadings, Colors> where Symbols: CaseIterable & Equatabl
     }
 
     mutating func calculateScore (){
-        if let lastMatchedSetTime = lastMatchedSetTime{
-            var scoreForSet = Int(30 - timeSinceLastMatch)
+        if lastMatchedSetTime != nil{
+            var scoreForSet = Int(baseScorePerMatch - timeSinceLastMatch)
             if scoreForSet <= 0{scoreForSet = 1}
             score += scoreForSet
             self.lastMatchedSetTime = Date()
+        }else {
+            fatalError("time not initiated")
         }
     }
 

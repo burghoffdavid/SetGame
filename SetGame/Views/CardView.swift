@@ -33,11 +33,7 @@ struct CardView: View {
                 }
                 .cardify(shadowColor: shadowColor)
                 .padding()
-
-            // Transition um die Karten rein und rausfliegen zu lassen (offset)
-
             }
-
     }
 }
 

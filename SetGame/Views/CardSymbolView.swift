@@ -25,7 +25,7 @@ struct CardSymbolView: View {
     func getShape(symbol: CardSymbol) -> some Shape{
         switch symbol {
         case .oval:
-            return AnyShape(RoundedRectangle(cornerRadius: 25))
+            return AnyShape(RoundedRectangle(cornerRadius: cornerRadius))
         case .diamond:
             return AnyShape(DiamondShape())
         case .squiggle:
@@ -38,23 +38,29 @@ struct CardSymbolView: View {
             .shadingModifier(card.shading)
             .foregroundColor(color)
     }
+
+    //MARK: - Drawing Constants
+    let cornerRadius: CGFloat = 25
 }
 
 extension Shape {
     func shadingModifier (_ shading: CardShading) -> some View{
+
+        let lineWidth: CGFloat = 1.5
+        let interval = 2
+
         switch shading {
         case .solid:
            return
             AnyView(self.fill())
         case .clear:
-            return AnyView(self.stroke(lineWidth: 1.5))
+            return AnyView(self.stroke(lineWidth: lineWidth))
         case .striped:
             return AnyView( ZStack{
-                self.stroke(lineWidth: 1.5)
-                Stripes(interval: 2).stroke().mask(self)
+                self.stroke(lineWidth: lineWidth)
+                Stripes(interval: interval).stroke().mask(self)
             })
         }
-
     }
 }
 

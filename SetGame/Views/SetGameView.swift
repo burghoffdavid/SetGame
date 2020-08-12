@@ -10,9 +10,6 @@ import SwiftUI
 struct SetGameView: View {
     @ObservedObject var setGameViewModel: SetGameViewModel
     @State var gameOver = false
-    var cardPositions: [[CGFloat]] = []
-
-    var cardPoistions : [[CGFloat]] = []
 
     var body: some View {
         GeometryReader{ geometry in
@@ -23,22 +20,22 @@ struct SetGameView: View {
                     }){
                         Image(systemName: "plus")
                     }
-                    .frame(width: geometry.size.width / 3, height: geometry.size.height / 6, alignment: .center)
+                    .frame(width: geometry.size.width / 3, height: geometry.size.height / headerProportionHeightSize, alignment: .center)
                         Text("Deck Cards: \(setGameViewModel.deck.count)")
                         .foregroundColor(Color.black)
                             .cardify(shadowColor: .clear)
                         .aspectRatio(2/3, contentMode: .fit)
-                        .frame(width: geometry.size.width / 3, height: geometry.size.height / 6, alignment: .center)
+                        .frame(width: geometry.size.width / headerProportionWidthSize, height: geometry.size.height / headerProportionHeightSize, alignment: .center)
                     Text("Score: \(setGameViewModel.score)")
-                        .frame(width: geometry.size.width / 3, height: geometry.size.height / 6, alignment: .center)
+                        .frame(width: geometry.size.width / headerProportionWidthSize, height: geometry.size.height / headerProportionHeightSize, alignment: .center)
                 }
-                .frame(width: geometry.size.width, height: geometry.size.height / 6, alignment: .center)
+                .frame(width: geometry.size.width, height: geometry.size.height / headerProportionHeightSize, alignment: .center)
                 Divider()
                 Grid(setGameViewModel.dealtCards){ card in
                     GeometryReader { cardGeo in
                         CardView(card: card)
                             .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.5)){
+                                withAnimation(.easeInOut(duration: cardAnimationDuration)){
                                     setGameViewModel.chooseCard(card: card)
                                     if setGameViewModel.dealtCards.count == 0{
                                         gameOver = true
@@ -61,30 +58,24 @@ struct SetGameView: View {
 //                                    print("yoffset = \(deckY - cardY)")
                                 }
                             }
-                            .rotationEffect(Angle.degrees(card.isSelected ? 10 : 0))
+                            .rotationEffect(Angle.degrees(card.isSelected ? cardRotationAngle : 0))
+                            //TO-DO: - Find a way to access cardGeo outside of Geometry Reader View to fly in Cards from deck, alternativ: get location without geometry reader
                             //.transition(AnyTransition.offset(x: geometry.frame(in: .global).midX - cardGeo.size.width / 2 - cardGeo.frame(in: .global).origin.x, y: geometry.frame(in: .global).minY - cardGeo.frame(in: .global).origin.y))
                     }
                     .transition(.asymmetric(insertion: .move(edge: .top), removal: .offset(generateRandomOffset(in: geometry.size))))
                 }
                 .onAppear{
-                    withAnimation(.easeInOut(duration: 1.0)){
+                    withAnimation(.easeInOut(duration: cardAnimationDuration)){
                         setGameViewModel.newGame()
                    }
                 }
             Button("Deal New Cards"){
-//                    let deckFrame = geometry.frame(in: .named("Deck"))
-//                    let cardFrame = geometry.frame(in: .named("Card"))
-//                    print(geometry.size)
-//                    print( deckFrame)
-                //print(cardFrame)
-                withAnimation(.easeInOut(duration: 0.5)){
+                withAnimation(.easeInOut(duration: cardAnimationDuration)){
                     setGameViewModel.dealNewCards()
                 }
             }
-            .disabled(setGameViewModel.deck.count == 0)  // TO DO Disable instead of empty
-
+            .disabled(setGameViewModel.deck.count == 0)
             }
-
         }
         .alert(isPresented: $gameOver) {
             Alert(title: Text("Game Ended"), message: Text("The game has ended, your total score is: \(setGameViewModel.score)"), dismissButton: .default(Text("Restart Game"), action: {
@@ -94,6 +85,16 @@ struct SetGameView: View {
 
         }
     }
+
+
+    //MARK: - Drawing Constants
+    let cardRotationAngle: Double = 10.0
+    let cardAnimationDuration = 0.5
+    let headerProportionHeightSize: CGFloat = 6
+    let headerProportionWidthSize: CGFloat = 3
+
+    //MARK: - Generate Random Offsets
+
     func generateRandomOffset(in rect: CGSize) -> CGSize{
         let radius = 1.5 * sqrt(pow(rect.width, 2) + pow(rect.height, 2))
         let centerX = rect.width/2
@@ -111,14 +112,5 @@ struct SetGameView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         SetGameView(setGameViewModel: SetGameViewModel())
-    }
-}
-
-struct FlyCardsTransition: ViewModifier {
-    let x: CGFloat
-    let y: CGFloat
-
-    func body(content: Content) -> some View {
-        content.position(x: x, y: y)
     }
 }

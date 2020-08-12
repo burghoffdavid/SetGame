@@ -57,6 +57,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E0492D2B24E42AC1008D001E /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				E0EB8B6824D7116D00AD183A /* Grid.swift */,
+				E0EB8B6A24D7117E00AD183A /* GridLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
 		E0D6790F24D82B8F0025B8AE /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,13 +124,12 @@
 		E0EB8B6124D707AA00AD183A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E0492D2B24E42AC1008D001E /* Layout */,
 				E0D6790F24D82B8F0025B8AE /* ViewModifiers */,
 				E0EB8B7124D7124800AD183A /* Shapes */,
 				E0EB8B5324D7079300AD183A /* SetGameView.swift */,
 				E0D6791124D82BE40025B8AE /* CardView.swift */,
 				E0D6790924D82B070025B8AE /* CardSymbolView.swift */,
-				E0EB8B6824D7116D00AD183A /* Grid.swift */,
-				E0EB8B6A24D7117E00AD183A /* GridLayout.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
