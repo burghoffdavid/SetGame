@@ -14,9 +14,11 @@ The goal of this assignment is to give you an opportunity to create your first a
 - [x] Cards can have any aspect ratio you like, but they must all have the same aspect ratio at all times (no matter their size and no matter how many are on screen at the same time). In other words, cards can be appearing to the user to get larger and smaller as the game goes on, but the cards cannot be “stretching” into different aspect ratios as the game is played. 
 - [x] The symbols on cards should be proportional to the size of the card (i.e. large cards should have large symbols and smaller cards should have smaller symbols). 
 - [x] Users must be able to select up to 3 cards by touching on them in an attempt to make a Set (i.e. 3 cards which match, per the rules of Set). It must be clearly visible to the user which cards have been selected so far.
-  - [x] TODO: implement animation to show selection of cards (wiggle)
 - [x] After 3 cards have been selected, you must indicate whether those 3 cards are a match or mismatch. You can show this any way you want (colors, borders, backgrounds, animation, whatever). Anytime there are 3 cards currently selected, it must be clear to the user whether they are a match or not (and the cards involved in a non-matching trio must look different than the cards look when there are only 1 or 2 cards in the selection). 
-  - [x] TODO: bettter Colors / clearer indication
+  
+  - [x] TODO: bettter Colors / clearer indication 
+  
+    --> Shadows
 - [x] Support “deselection” by touching already-selected cards (but only if there are 1 or 2 cards (not 3) currently selected). 
 - [x] When any card is touched on and there are already 3 matching Set cards selected, then …
   - [x] as per the rules of Set, replace those 3 matching Set cards with new ones from the deck
@@ -31,7 +33,6 @@ The goal of this assignment is to give you an opportunity to create your first a
   - [x] disable this button if the deck is empty 
 - [x] You also must have a “New Game” button that starts a new game (i.e. back to 12 randomly chosen cards). Cards should fly in and out when this happens as well.
 - [x] To make your life a bit easier, you can replace the “squiggle” appearance in the Set game with a rectangle.
-  - [ ] TODO: Create better Squiggle appearance
 - [x] You must author your own Shape struct to do the diamond.
 - [x] Another life-easing change is that you can use a semi-transparent color to represent the “striped” shading. Be sure to pick a transparency level that is clearly distinguishable from “solid”.
 - [x] You can use any 3 colors as long as they are clearly distinguishable from each other.
@@ -43,7 +44,11 @@ The goal of this assignment is to give you an opportunity to create your first a
 
 - [ ] Have your cards ﬂy in from a deck View located somewhere on screen. This is a little bit more difﬁcult than ﬂying to a random location because ﬁguring out where some other View is will require some investigation on your part.
 
+  --> partly implemented, issues accessing geometry proxy of individual cards
+
 - [ ] If you deal from a deck, have the cards be “face down” while on the deck and then ﬂip over as they ﬂy out to their locations when they are dealt.
+
+  --> Dependent on extra credit above
 
 - [x] Draw the actual squiggle instead of using a rectangle.
   --> used [Antonio J Rossis implementation](https://github.com/antoniojrossi)
