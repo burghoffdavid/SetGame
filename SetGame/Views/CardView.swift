@@ -13,6 +13,15 @@ struct CardView: View {
     private let shapeWidthScale : CGFloat = 0.5
     private let shapeHeightScale : CGFloat = 6
 
+    var shadowColor: Color{
+        if card.isMatched && card.isSelected {
+            return .green
+        }else if card.isPartOfWrongSet && card.isSelected{
+            return .red
+        }
+        return .clear
+    }
+
     @ViewBuilder
     var body: some View {
         GeometryReader{geometry in
@@ -21,10 +30,10 @@ struct CardView: View {
                             CardSymbolView(card: card)
                         }
                         .frame(width: min(geometry.size.width, geometry.size.height*cardAspectRatio) * shapeWidthScale, height: min(geometry.size.height,geometry.size.width/cardAspectRatio)/shapeHeightScale)
-                        //.opacity(card.shading == .striped ? 0.3 : 1)
                 }
-                .cardify(isSelected: card.isSelected, isMatched: card.isMatched, isPartOfWrongSet: card.isPartOfWrongSet)
+                .cardify(shadowColor: shadowColor)
                 .padding()
+
             // Transition um die Karten rein und rausfliegen zu lassen (offset)
 
             }

@@ -11,7 +11,9 @@ struct SetGameView: View {
     @ObservedObject var setGameViewModel: SetGameViewModel
     @State var gameOver = false
     var cardPositions: [[CGFloat]] = []
-    private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
+
+    var cardPoistions : [[CGFloat]] = []
+
     var body: some View {
         GeometryReader{ geometry in
         VStack{
@@ -24,7 +26,7 @@ struct SetGameView: View {
                     .frame(width: geometry.size.width / 3, height: geometry.size.height / 6, alignment: .center)
                         Text("Deck Cards: \(setGameViewModel.deck.count)")
                         .foregroundColor(Color.black)
-                        .cardify(isSelected: false, isMatched: false, isPartOfWrongSet: false)
+                            .cardify(shadowColor: .clear)
                         .aspectRatio(2/3, contentMode: .fit)
                         .frame(width: geometry.size.width / 3, height: geometry.size.height / 6, alignment: .center)
                     Text("Score: \(setGameViewModel.score)")
@@ -36,9 +38,6 @@ struct SetGameView: View {
                     GeometryReader { cardGeo in
                         CardView(card: card)
                             .onTapGesture {
-                                print(card.id)
-                                print(card)
-
                                 withAnimation(.easeInOut(duration: 0.5)){
                                     setGameViewModel.chooseCard(card: card)
                                     if setGameViewModel.dealtCards.count == 0{
@@ -63,27 +62,15 @@ struct SetGameView: View {
                                 }
                             }
                             .rotationEffect(Angle.degrees(card.isSelected ? 10 : 0))
-                            .onAppear{
-                            }
-                            //.transition(AnyTransition.offset(x: -500, y: -500))
-                            //.transition(AnyTransition.offset(x: 0, y: 0))
-                            //.animation(.easeInOut(duration: 0.5))
-//                            .offset(x: geometry.frame(in: .global).midX - cardGeo.size.width / 2 - cardGeo.frame(in: .global).origin.x, y: geometry.frame(in: .global).minY - cardGeo.frame(in: .global).origin.y)
-                            .transition(AnyTransition.offset(x: geometry.frame(in: .global).midX - cardGeo.size.width / 2 - cardGeo.frame(in: .global).origin.x, y: geometry.frame(in: .global).minY - cardGeo.frame(in: .global).origin.y))
+                            //.transition(AnyTransition.offset(x: geometry.frame(in: .global).midX - cardGeo.size.width / 2 - cardGeo.frame(in: .global).origin.x, y: geometry.frame(in: .global).minY - cardGeo.frame(in: .global).origin.y))
                     }
-                    .transition(.asymmetric(insertion: .move(edge: .top), removal: .move(edge: .bottom)))
-                    .onAppear{
-                        print(geometry.frame(in: .named("Card-\(card.id)")))
-
-                    }
-
+                    .transition(.asymmetric(insertion: .move(edge: .top), removal: .offset(generateRandomOffset(in: geometry.size))))
                 }
                 .onAppear{
                     withAnimation(.easeInOut(duration: 1.0)){
                         setGameViewModel.newGame()
                    }
                 }
-
             Button("Deal New Cards"){
 //                    let deckFrame = geometry.frame(in: .named("Deck"))
 //                    let cardFrame = geometry.frame(in: .named("Card"))
@@ -107,15 +94,25 @@ struct SetGameView: View {
 
         }
     }
+    func generateRandomOffset(in rect: CGSize) -> CGSize{
+        let radius = 1.5 * sqrt(pow(rect.width, 2) + pow(rect.height, 2))
+        let centerX = rect.width/2
+        let centerY = rect.height/2
+
+        let randomAngle = CGFloat(Double.random(in: 0..<360))
+        let x = centerX + radius * cos(randomAngle * CGFloat(Double.pi) / 180)
+        let y = centerY + radius * sin(randomAngle * CGFloat(Double.pi) / 180)
+
+        return CGSize(width: x, height: y)
+    }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         SetGameView(setGameViewModel: SetGameViewModel())
     }
 }
-
-
 
 struct FlyCardsTransition: ViewModifier {
     let x: CGFloat
@@ -125,27 +122,3 @@ struct FlyCardsTransition: ViewModifier {
         content.position(x: x, y: y)
     }
 }
-
-//extension View {
-//    // If condition is met, apply modifier, otherwise, leave the view untouched
-//    public func conditionalModifier<T>(_ condition: Bool, _ modifier: T) -> some View where T: ViewModifier {
-//        Group {
-//            if condition {
-//                self.modifier(modifier)
-//            } else {
-//                self
-//            }
-//        }
-//    }
-//
-//    // Apply trueModifier if condition is met, or falseModifier if not.
-//    public func conditionalModifier<M1, M2>(_ condition: Bool, _ trueModifier: M1, _ falseModifier: M2) -> some View where M1: ViewModifier, M2: ViewModifier {
-//        Group {
-//            if condition {
-//                self.modifier(trueModifier)
-//            } else {
-//                self.modifier(falseModifier)
-//            }
-//        }
-//    }
-//}

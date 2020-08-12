@@ -16,11 +16,11 @@ The goal of this assignment is to give you an opportunity to create your first a
 - [x] Users must be able to select up to 3 cards by touching on them in an attempt to make a Set (i.e. 3 cards which match, per the rules of Set). It must be clearly visible to the user which cards have been selected so far.
   - [x] TODO: implement animation to show selection of cards (wiggle)
 - [x] After 3 cards have been selected, you must indicate whether those 3 cards are a match or mismatch. You can show this any way you want (colors, borders, backgrounds, animation, whatever). Anytime there are 3 cards currently selected, it must be clear to the user whether they are a match or not (and the cards involved in a non-matching trio must look different than the cards look when there are only 1 or 2 cards in the selection). 
-  - [ ] TODO: bettter Colors / clearer indication
+  - [x] TODO: bettter Colors / clearer indication
 - [x] Support “deselection” by touching already-selected cards (but only if there are 1 or 2 cards (not 3) currently selected). 
 - [x] When any card is touched on and there are already 3 matching Set cards selected, then …
   - [x] as per the rules of Set, replace those 3 matching Set cards with new ones from the deck
-  - [ ] the matched cards should fly away (animated) to random locations off-screen
+  - [x] the matched cards should fly away (animated) to random locations off-screen
   - [ ] the replacement cards should fly in (animated) from other random off-screen locations (or from a “deck” view somewhere on screen, see Extra Credit)
   - [x] if the deck is empty then the space vacated by the matched cards (which cannot be replaced) should be made available to the remaining cards (i.e. they’ll likely get bigger)
   - [x] if the touched card was not part of the matching Set, then select that card 

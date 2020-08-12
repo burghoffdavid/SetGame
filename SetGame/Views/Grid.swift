@@ -12,6 +12,7 @@ struct Grid<Item, ItemView>: View where Item:Identifiable, ItemView:View {
     private var items: [Item]
     private var viewForItem : (Item) -> ItemView
 
+
     init(_ items: [Item], viewForItem: @escaping (Item) -> ItemView) {
         self.items = items
         self.viewForItem = viewForItem
@@ -32,4 +33,5 @@ struct Grid<Item, ItemView>: View where Item:Identifiable, ItemView:View {
             .frame(width: layout.itemSize.width, height: layout.itemSize.height)
             .position(layout.location(ofItemAt: index))
     }
+
 }

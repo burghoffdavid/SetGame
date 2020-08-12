@@ -162,9 +162,6 @@ struct SetGame<Symbols, Shadings, Colors> where Symbols: CaseIterable & Equatabl
             if scoreForSet <= 0{scoreForSet = 1}
             score += scoreForSet
             self.lastMatchedSetTime = Date()
-        }else{
-            score += 5
-            lastMatchedSetTime = Date()
         }
     }
 
